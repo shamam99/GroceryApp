@@ -1,24 +1,42 @@
 //
 //  ContentView.swift
-//  GroceryApp
+//  market
 //
-//  Created by Shamam Alkafri on 30/09/2024.
+//  Created by Shamam Alkafri on 29/09/2024.
 //
 
 import SwiftUI
 
 struct ContentView: View {
+    @State private var isActive = false
+    
     var body: some View {
-        VStack {
-            Image(systemName: "globe")
-                .imageScale(.large)
-                .foregroundStyle(.tint)
-            Text("Hello, world!")
+        ZStack {
+            if isActive {
+                HomeView()
+            } else {
+                Color.white
+                    .ignoresSafeArea()
+                
+                Image("logo")
+                    .resizable()
+                    .scaledToFit()
+                    .frame(width: 200, height: 200)
+            }
         }
-        .padding()
+        .onAppear {
+            DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
+                withAnimation {
+                    self.isActive = true
+                }
+            }
+        }
     }
 }
 
-#Preview {
-    ContentView()
+struct ContentView_Previews: PreviewProvider {
+    static var previews: some View {
+        ContentView()
+    }
 }
+
