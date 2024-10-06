@@ -16,22 +16,28 @@ struct Plans: View {
     @State private var navigateToHome = false
     
     var body: some View {
+        
         NavigationView {
-            VStack {
+            ZStack {
                 ScrollView(.horizontal, showsIndicators: false) {
                     HStack(spacing: 20) {
                         // Generate 3 plans based on the budget
                         ForEach(generatePlans(), id: \.title) { plan in
                             PlanCardView(plan: plan, showConfirmationPopup: $showConfirmationPopup)
                                 .frame(width: UIScreen.main.bounds.width - 100)
+
                                 .padding(.vertical)
                         }
                     }
                     .padding(.horizontal, 10)
+                   
                 }
             }
+            
             .navigationBarTitle("Plans", displayMode: .inline)
-            .alert(isPresented: $showConfirmationPopup) {
+            .alert(isPresented: $showConfirmationPopup)
+            
+            {
                 Alert(
                     title: Text("Great"),
                     message: Text("Your list is ready now!"),
@@ -40,6 +46,8 @@ struct Plans: View {
                     })
                 )
             }
+            .padding(.top,-30)
+            
         }
         .fullScreenCover(isPresented: $navigateToHome) {
             HomeView()
@@ -76,6 +84,8 @@ struct Plans: View {
         
         return [plan1, plan2, plan3]
     }
+        
+        
 }
 
 
@@ -87,93 +97,109 @@ struct PlanCardView: View {
     @ObservedObject var planManager = PlanManager.shared
     
     var body: some View {
-        VStack(spacing: 10) {
-            Text(plan.title)
-                .font(.headline)
-                .padding(.vertical, 10)
-                .frame(maxWidth: .infinity)
-                .background(Color.white)
-                .shadow(radius: 30)
-                .cornerRadius(8)
-                .padding(.horizontal)
-            
-            ScrollView {
-                VStack(alignment: .leading, spacing: 5) {
-                    ForEach(plan.items) { item in
-                        HStack {
-                            Text("\(item.quantity)x \(item.name)")
-                                .font(.body)
-                                .padding(.leading, 10)
-                            
-                            Spacer()
-                            
-                            Text("\(String(format: "%.2f", item.price))")
-                                .font(.body)
-                                .padding(.trailing, 10)
+        ZStack{
+            VStack(spacing: 10) {
+                Color(red: 0.9529411764705882, green: 0.9490196078431372, blue: 0.9725490196078431)
+                    .ignoresSafeArea()
+                    .frame(height: 30)
+                Text(plan.title)
+                    .font(.headline)
+                    .padding(.vertical, 10)
+                    .frame(maxWidth: .infinity)
+                    .padding(.top,10)
+                    .background(Color.white)
+                //                .shadow(radius: 30)
+                    .cornerRadius(8)
+                    .padding(.horizontal)
+                
+                ScrollView {
+                    VStack(alignment: .leading, spacing: 5) {
+                        ForEach(plan.items) { item in
+                            HStack {
+                                Text("\(item.quantity)x \(item.name)")
+                                    .font(.body)
+                                    .padding(.leading, 10)
+                                
+                                Spacer()
+                                
+                                Text("\(String(format: "%.2f", item.price))")
+                                    .font(.body)
+                                    .padding(.trailing, 10)
+                            }
+                            .padding(.vertical, 8)
+                            .background(Color(.white))
+                            .cornerRadius(8)
+                            //                        .shadow(color: Color.gray.opacity(0.2), radius: 3, x: 0, y: 1)
+                            .padding(.horizontal, 8)
                         }
-                        .padding(.vertical, 8)
-                        .background(Color(.white))
-                        .cornerRadius(8)
-                        .shadow(color: Color.gray.opacity(0.2), radius: 3, x: 0, y: 1)
-                        .padding(.horizontal, 8)
                     }
                 }
-            }
-            .frame(height: 300)
-            .background(Color.white.opacity(0.9))
-            .cornerRadius(10)
-            .padding(.horizontal)
-            
-            VStack(spacing: 8) {
-                HStack {
-                    Text("Total")
-                        .fontWeight(.semibold)
-                    Spacer()
-                    Text("\(String(format: "%.2f", plan.total)) SR")
-                }
+                .frame(height: 300)
+                .background(Color.white.opacity(0.9))
+                .cornerRadius(10)
                 .padding(.horizontal)
                 
-                HStack {
-                    Text("Saved")
-                        .fontWeight(.semibold)
-                    Spacer()
-                    Text("\(String(format: "%.2f", plan.saved)) SR")
-                        .foregroundColor(.green)
+                VStack(spacing: 8) {
+                    HStack {
+                        Text("Total")
+                            .fontWeight(.semibold)
+                        Spacer()
+                        Text("\(String(format: "%.2f", plan.total)) SR")
+                    }
+                    .padding(.horizontal)
+                    
+                    HStack {
+                        Text("Saved")
+                            .fontWeight(.semibold)
+                        Spacer()
+                        Text("\(String(format: "%.2f", plan.saved)) SR")
+                            .foregroundColor(.green)
+                    }
+                    .frame(height: 30)
+                    .padding(.horizontal)
                 }
+                .padding(.top,10)
+                //            .padding(.all,0)
+                .background(Color.white)
+                //            .shadow(radius: 20)
+                .cornerRadius(8)
                 .padding(.horizontal)
-            }
-            .padding(.top, 10)
-            .background(Color.white)
-            .shadow(radius: 20)
-            .cornerRadius(8)
-            .padding(.horizontal)
-            
-            Button(action: {
-                // Save the full plan details in PlanManager
-                let selectedPlan = Plan(
-                    title: plan.title,
-                    items: plan.items.map { PlanItem(name: $0.name, quantity: $0.quantity, price: $0.price) },
-                    total: plan.total,
-                    saved: plan.saved
-                )
-                planManager.savePlan(selectedPlan)
-                showConfirmationPopup = true
-            }) {
-                Text("Select")
-                    .frame(width: 150, height: 50)
-                    .background(Color.blue)
-                    .foregroundColor(.white)
-                    .cornerRadius(25)
-                    .padding(.bottom, 20)
+                
+                Button(action: {
+                    // Save the full plan details in PlanManager
+                    let selectedPlan = Plan(
+                        title: plan.title,
+                        items: plan.items.map { PlanItem(name: $0.name, quantity: $0.quantity, price: $0.price) },
+                        total: plan.total,
+                        saved: plan.saved
+                    )
+                    planManager.savePlan(selectedPlan)
+                    showConfirmationPopup = true
+                }) {
+                    Text("Select")
+                        .frame(width: 150, height: 50)
+                        .background(Color.blue)
+                        .foregroundColor(.white)
+                        .cornerRadius(25)
+                        .padding(.bottom, 20)
+                        .frame(height: /*@START_MENU_TOKEN@*/100/*@END_MENU_TOKEN@*/)
+                }
             }
         }
-        .background(Color(.white))
+        .background(Color(red: 0.9529411764705882, green: 0.9490196078431372, blue: 0.9725490196078431))
+//        .ignoresSafeArea()
+//        .frame(height: 800)
+       
         .cornerRadius(15)
-        .shadow(color: Color.blue.opacity(0.2), radius: 8, x: 0, y: 4)
+//        .shadow(color: Color.blue.opacity(0.2), radius: 8, x: 0, y: 4)
         .padding(.vertical, 10)
         .padding(.horizontal, 5)
+        
+       
     }
+        
 }
+    
 
     
 //    // New function to save the selected plan with all its data

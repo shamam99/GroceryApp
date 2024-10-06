@@ -13,59 +13,66 @@ struct BudgetEntrySheet: View {
     var onDone: () -> Void
     
     var body: some View {
-        VStack {
-            Text("Price Select")
-                .font(.headline)
-                .padding()
+        ZStack{
+            Color(red: 0.9529411764705882, green: 0.9490196078431372, blue: 0.9725490196078431)
+            //                .ignoresSafeArea()
+                .edgesIgnoringSafeArea(.all)
             
-            HStack {
-                Text("Min")
-                    .font(.subheadline)
-                Spacer()
-                TextField("Enter Min Budget", text: $minBudget)
-                    .textFieldStyle(RoundedBorderTextFieldStyle())
-                    .keyboardType(.decimalPad)
-                    .frame(width: 100)
-            }
-            .padding()
-            
-            HStack {
-                Text("Max")
-                    .font(.subheadline)
-                Spacer()
-                TextField("Enter Max Budget", text: $maxBudget)
-                    .textFieldStyle(RoundedBorderTextFieldStyle())
-                    .keyboardType(.decimalPad)
-                    .frame(width: 100)
-            }
-            .padding()
-            
-            HStack(spacing: 50) {
-                Button(action: {
-                    onDone()
-                }) {
-                    Text("Cancel")
-                        .frame(width: 100, height: 40)
-                        .background(Color.gray)
-                        .foregroundColor(.white)
-                        .cornerRadius(10)
-                }
+            VStack {
+                Text("Price Select")
+                    .font(.headline)
+                    .padding()
                 
-                Button(action: {
-                    onDone()
-                }) {
-                    Text("Done")
-                        .frame(width: 100, height: 40)
-                        .background(Color.blue)
-                        .foregroundColor(.white)
-                        .cornerRadius(10)
+                HStack {
+                    Text("Min")
+                        .font(.subheadline)
+                    Spacer()
+                    TextField("Enter Min Budget", text: $minBudget)
+                        .textFieldStyle(RoundedBorderTextFieldStyle())
+                        .keyboardType(.decimalPad)
+                        .frame(width: 100)
                 }
+                .padding()
+                
+                HStack {
+                    Text("Max")
+                        .font(.subheadline)
+                    Spacer()
+                    TextField("Enter Max Budget", text: $maxBudget)
+                        .textFieldStyle(RoundedBorderTextFieldStyle())
+                        .keyboardType(.decimalPad)
+                        .frame(width: 100)
+                }
+                .padding()
+                
+                HStack(spacing: 50) {
+                    Button(action: {
+                        onDone()
+                    }) {
+                        Text("Cancel")
+                            .frame(width: 100, height: 40)
+                            .background(Color.gray)
+                            .foregroundColor(.white)
+                            .cornerRadius(10)
+                    }
+                    
+                    Button(action: {
+                        onDone()
+                    }) {
+                        Text("Done")
+                            .frame(width: 100, height: 40)
+                            .background(Color.blue)
+                            .foregroundColor(.white)
+                            .cornerRadius(10)
+                    }
+                }
+                .padding()
+                
+                Spacer()
             }
-            .padding()
             
-            Spacer()
+            .padding()
         }
-        .padding()
     }
 }
 
