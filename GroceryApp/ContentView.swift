@@ -15,13 +15,13 @@ struct ContentView: View {
             if isActive {
                 HomeView()
             } else {
-                Color.white
+                Color.blue
                     .ignoresSafeArea()
                 
-                Image("logo")
+                Image("logo1")
                     .resizable()
                     .scaledToFit()
-                    .frame(width: 200, height: 200)
+                    .frame(width: 250, height: 250)
             }
         }
         .onAppear {

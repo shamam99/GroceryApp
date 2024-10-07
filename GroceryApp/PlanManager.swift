@@ -13,9 +13,13 @@ class PlanManager: ObservableObject {
     @Published private(set) var savedPlans: [Plan] = []
 
     func savePlan(_ plan: Plan) {
+        // Debug: Print the plan being saved
+        print("Saving Plan: \(plan)")
+        
         savedPlans.append(plan)
-        print("Saved Plan Details:", plan)
+        print("Current Saved Plans: \(savedPlans)")
     }
 }
+
 
 

@@ -7,14 +7,14 @@
 
 import SwiftUI
 
-struct PlanDetailSheet: View {
+struct PlanDetailView: View {
     let plan: Plan
 
     var body: some View {
-        ZStack{
+        ZStack {
             Color(red: 0.9529411764705882, green: 0.9490196078431372, blue: 0.9725490196078431)
-            //                .ignoresSafeArea()
                 .edgesIgnoringSafeArea(.all)
+            
             VStack {
                 Text("Details for \(plan.title)")
                     .font(.headline)
@@ -35,7 +35,6 @@ struct PlanDetailSheet: View {
                             .padding()
                             .background(Color(.white))
                             .cornerRadius(10)
-//                            .shadow(radius: 5)
                             .padding(.horizontal)
                             .padding(.top, 10)
                         }
@@ -54,27 +53,16 @@ struct PlanDetailSheet: View {
                 .padding(.top, 10)
                 
                 Spacer()
-                
-                Button(action: {
-                    // Optional: Dismiss the sheet if needed
-                }) {
-                    Text("Done")
-                        .frame(width: 150, height: 50)
-                        .background(Color.blue)
-                        .foregroundColor(.white)
-                        .cornerRadius(25)
-                        .padding(.bottom, 20)
-                }
             }
             .padding()
         }
+        .navigationBarTitle("Plan Details", displayMode: .inline)
     }
 }
 
 
-
-struct PlanDetailSheet_Previews: PreviewProvider {
+struct PlanDetailView_Previews: PreviewProvider {
     static var previews: some View {
-        PlanDetailSheet(plan: Plan(title: "Sample Plan", items: mockItems100To200, total: 150, saved: 50))
+        PlanDetailView(plan: Plan(title: "Sample Plan", items: mockItems100To200, total: 150, saved: 50))
     }
 }
