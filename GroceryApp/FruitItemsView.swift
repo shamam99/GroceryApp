@@ -12,6 +12,7 @@ struct FruitItemsView: View {
     var listName: String
     @ObservedObject var basketManager = BasketManager.shared
     @State private var fruits = sampleFruits
+    @State private var searchText = ""
     @State private var showBasketSheet = false
     @State private var navigateToMyList = false
     @State private var localNavigateToHome = false
@@ -25,6 +26,15 @@ struct FruitItemsView: View {
                     .font(.largeTitle)
                     .padding(.top, 20)
                     .bold()
+                HStack {
+                    TextField("Search...", text: $searchText)
+                        .padding(7)
+                        .background(Color(.systemGray5))
+                        .cornerRadius(8)
+                }
+                .padding(.horizontal)
+                .padding(.top, -4)
+                
                 ScrollView {
                     ForEach(fruits.indices, id: \.self) { index in
                         HStack(spacing: 20) {
