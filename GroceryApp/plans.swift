@@ -59,31 +59,73 @@ struct Plans: View {
     }
     
     private func generatePlans() -> [Plan] {
-        let totalCost = items.reduce(0) { $0 + ($1.price * Double($1.quantity)) }
+        // Plan 1: Budget up to half the max budget
+        var plan1Items = [PlanItem]()
+        var plan1Total: Double = 0.0
+        
+        for item in items {
+            let itemCost = item.price * Double(item.quantity)
+            if plan1Total + itemCost <= maxBudget * 0.5 {
+                plan1Items.append(item)
+                plan1Total += itemCost
+            } else {
+                break
+            }
+        }
         
         let plan1 = Plan(
             title: "\(Int(minBudget))-\(Int(maxBudget * 0.5)) SR",
-            items: items.filter { $0.price * Double($0.quantity) <= maxBudget * 0.5 },
-            total: min(maxBudget * 0.5, totalCost),
-            saved: maxBudget * 0.5 - totalCost
+            items: plan1Items,
+            total: plan1Total,
+            saved: maxBudget - plan1Total // Save from the user's max budget
         )
+        
+        // Plan 2: Budget up to 75% of the max budget
+        var plan2Items = [PlanItem]()
+        var plan2Total: Double = 0.0
+        
+        for item in items {
+            let itemCost = item.price * Double(item.quantity)
+            if plan2Total + itemCost <= maxBudget * 0.75 {
+                plan2Items.append(item)
+                plan2Total += itemCost
+            } else {
+                break
+            }
+        }
         
         let plan2 = Plan(
             title: "\(Int(maxBudget * 0.5))-\(Int(maxBudget * 0.75)) SR",
-            items: items.filter { $0.price * Double($0.quantity) <= maxBudget * 0.75 },
-            total: min(maxBudget * 0.75, totalCost),
-            saved: maxBudget * 0.75 - totalCost
+            items: plan2Items,
+            total: plan2Total,
+            saved: maxBudget - plan2Total // Save from the user's max budget
         )
+        
+        // Plan 3: Budget up to the full max budget
+        var plan3Items = [PlanItem]()
+        var plan3Total: Double = 0.0
+        
+        for item in items {
+            let itemCost = item.price * Double(item.quantity)
+            if plan3Total + itemCost <= maxBudget {
+                plan3Items.append(item)
+                plan3Total += itemCost
+            } else {
+                break
+            }
+        }
         
         let plan3 = Plan(
             title: "\(Int(maxBudget * 0.75))-\(Int(maxBudget)) SR",
-            items: items.filter { $0.price * Double($0.quantity) <= maxBudget },
-            total: min(maxBudget, totalCost),
-            saved: maxBudget - totalCost
+            items: plan3Items,
+            total: plan3Total,
+            saved: maxBudget - plan3Total // Save from the user's max budget
         )
         
         return [plan1, plan2, plan3]
     }
+
+
         
         
 }
@@ -97,107 +139,91 @@ struct PlanCardView: View {
     @ObservedObject var planManager = PlanManager.shared
     
     var body: some View {
-        ZStack{
-            VStack(spacing: 10) {
-                Color(red: 0.9529411764705882, green: 0.9490196078431372, blue: 0.9725490196078431)
-                    .ignoresSafeArea()
-                    .frame(height: 30)
-                Text(plan.title)
-                    .font(.headline)
-                    .padding(.vertical, 10)
-                    .frame(maxWidth: .infinity)
-                    .padding(.top,10)
-                    .background(Color.white)
-                //                .shadow(radius: 30)
-                    .cornerRadius(8)
-                    .padding(.horizontal)
-                
-                ScrollView {
-                    VStack(alignment: .leading, spacing: 5) {
-                        ForEach(plan.items) { item in
-                            HStack {
-                                Text("\(item.quantity)x \(item.name)")
-                                    .font(.body)
-                                    .padding(.leading, 10)
-                                
-                                Spacer()
-                                
-                                Text("\(String(format: "%.2f", item.price))")
-                                    .font(.body)
-                                    .padding(.trailing, 10)
-                            }
-                            .padding(.vertical, 8)
-                            .background(Color(.white))
-                            .cornerRadius(8)
-                            //                        .shadow(color: Color.gray.opacity(0.2), radius: 3, x: 0, y: 1)
-                            .padding(.horizontal, 8)
-                        }
-                    }
-                }
-                .frame(height: 300)
-                .background(Color.white.opacity(0.9))
-                .cornerRadius(10)
-                .padding(.horizontal)
-                
-                VStack(spacing: 8) {
-                    HStack {
-                        Text("Total")
-                            .fontWeight(.semibold)
-                        Spacer()
-                        Text("\(String(format: "%.2f", plan.total)) SR")
-                    }
-                    .padding(.horizontal)
-                    
-                    HStack {
-                        Text("Saved")
-                            .fontWeight(.semibold)
-                        Spacer()
-                        Text("\(String(format: "%.2f", plan.saved)) SR")
-                            .foregroundColor(.green)
-                    }
-                    .frame(height: 30)
-                    .padding(.horizontal)
-                }
-                .padding(.top,10)
-                //            .padding(.all,0)
+        VStack(spacing: 10) {
+            Color(red: 0.9529411764705882, green: 0.9490196078431372, blue: 0.9725490196078431)
+                .frame(height: 30)
+            
+            Text(plan.title)
+                .font(.headline)
+                .padding(.vertical, 10)
+                .frame(maxWidth: .infinity)
                 .background(Color.white)
-                //            .shadow(radius: 20)
                 .cornerRadius(8)
                 .padding(.horizontal)
-                
-                Button(action: {
-                    // Save the full plan details in PlanManager
-                    let selectedPlan = Plan(
-                        title: plan.title,
-                        items: plan.items.map { PlanItem(name: $0.name, quantity: $0.quantity, price: $0.price) },
-                        total: plan.total,
-                        saved: plan.saved
-                    )
-                    planManager.savePlan(selectedPlan)
-                    showConfirmationPopup = true
-                }) {
-                    Text("Select")
-                        .frame(width: 150, height: 50)
-                        .background(Color.blue)
-                        .foregroundColor(.white)
-                        .cornerRadius(25)
-                        .padding(.bottom, 20)
-                        .frame(height: /*@START_MENU_TOKEN@*/100/*@END_MENU_TOKEN@*/)
+            
+            ScrollView {
+                VStack(alignment: .leading, spacing: 5) {
+                    ForEach(plan.items) { item in
+                        HStack {
+                            Text("\(item.quantity)x \(item.name)")
+                                .font(.body)
+                                .padding(.leading, 10)
+                            
+                            Spacer()
+                            
+                            Text("\(String(format: "%.2f", item.price))")
+                                .font(.body)
+                                .padding(.trailing, 10)
+                        }
+                        .padding(.vertical, 8)
+                        .background(Color(.white))
+                        .cornerRadius(8)
+                        .padding(.horizontal, 8)
+                    }
                 }
+            }
+            .frame(height: 300)
+            .background(Color.white.opacity(0.9))
+            .cornerRadius(10)
+            .padding(.horizontal)
+            
+            VStack(spacing: 8) {
+                HStack {
+                    Text("Total")
+                        .fontWeight(.semibold)
+                    Spacer()
+                    Text("\(String(format: "%.2f", plan.total)) SR")
+                }
+                .padding(.horizontal)
+                
+                HStack {
+                    Text("Saved")
+                        .fontWeight(.semibold)
+                    Spacer()
+                    Text("\(String(format: "%.2f", plan.saved)) SR")
+                        .foregroundColor(.green)
+                }
+                .frame(height: 30)
+                .padding(.horizontal)
+            }
+            .padding(.top, 10)
+            .background(Color.white)
+            .cornerRadius(8)
+            .padding(.horizontal)
+            
+            Button(action: {
+                let selectedPlan = Plan(
+                    title: plan.title,
+                    items: plan.items.map { PlanItem(name: $0.name, quantity: $0.quantity, price: $0.price) },
+                    total: plan.total,
+                    saved: plan.saved
+                )
+                planManager.savePlan(selectedPlan)
+                showConfirmationPopup = true
+            }) {
+                Text("Select")
+                    .frame(width: 150, height: 50)
+                    .background(Color.blue)
+                    .foregroundColor(.white)
+                    .cornerRadius(25)
+                    .padding(.bottom, 20)
             }
         }
         .background(Color(red: 0.9529411764705882, green: 0.9490196078431372, blue: 0.9725490196078431))
-//        .ignoresSafeArea()
-//        .frame(height: 800)
-       
         .cornerRadius(15)
-//        .shadow(color: Color.blue.opacity(0.2), radius: 8, x: 0, y: 4)
         .padding(.vertical, 10)
         .padding(.horizontal, 5)
-        
-       
     }
-        
 }
     
 

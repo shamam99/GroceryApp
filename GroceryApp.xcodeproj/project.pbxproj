@@ -24,10 +24,10 @@
 		34F292F22CAD1D3D000EFB14 /* ListModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 34F292F12CAD1D3D000EFB14 /* ListModel.swift */; };
 		34F292F42CAD1D59000EFB14 /* BasketSheetView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 34F292F32CAD1D59000EFB14 /* BasketSheetView.swift */; };
 		34F292F62CAD1D74000EFB14 /* plans.swift in Sources */ = {isa = PBXBuildFile; fileRef = 34F292F52CAD1D74000EFB14 /* plans.swift */; };
-		34F292F82CAD1D90000EFB14 /* CategoryCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = 34F292F72CAD1D90000EFB14 /* CategoryCard.swift */; };
+		34F292F82CAD1D90000EFB14 /* CategoryCardtest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 34F292F72CAD1D90000EFB14 /* CategoryCardtest.swift */; };
 		34F292FA2CAD1DA8000EFB14 /* ListDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 34F292F92CAD1DA8000EFB14 /* ListDetailView.swift */; };
 		34F292FC2CAD1DD8000EFB14 /* BudgetEntrySheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 34F292FB2CAD1DD8000EFB14 /* BudgetEntrySheet.swift */; };
-		34F292FE2CAD1DF3000EFB14 /* PlanDetailSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 34F292FD2CAD1DF3000EFB14 /* PlanDetailSheet.swift */; };
+		34F292FE2CAD1DF3000EFB14 /* PlanDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 34F292FD2CAD1DF3000EFB14 /* PlanDetailView.swift */; };
 		34F293002CAD1E0D000EFB14 /* PlanManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 34F292FF2CAD1E0D000EFB14 /* PlanManager.swift */; };
 		34F293022CAD1E4A000EFB14 /* SavedPlansView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 34F293012CAD1E4A000EFB14 /* SavedPlansView.swift */; };
 /* End PBXBuildFile section */
@@ -70,10 +70,10 @@
 		34F292F12CAD1D3D000EFB14 /* ListModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListModel.swift; sourceTree = "<group>"; };
 		34F292F32CAD1D59000EFB14 /* BasketSheetView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BasketSheetView.swift; sourceTree = "<group>"; };
 		34F292F52CAD1D74000EFB14 /* plans.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = plans.swift; sourceTree = "<group>"; };
-		34F292F72CAD1D90000EFB14 /* CategoryCard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CategoryCard.swift; sourceTree = "<group>"; };
+		34F292F72CAD1D90000EFB14 /* CategoryCardtest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CategoryCardtest.swift; sourceTree = "<group>"; };
 		34F292F92CAD1DA8000EFB14 /* ListDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListDetailView.swift; sourceTree = "<group>"; };
 		34F292FB2CAD1DD8000EFB14 /* BudgetEntrySheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BudgetEntrySheet.swift; sourceTree = "<group>"; };
-		34F292FD2CAD1DF3000EFB14 /* PlanDetailSheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlanDetailSheet.swift; sourceTree = "<group>"; };
+		34F292FD2CAD1DF3000EFB14 /* PlanDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlanDetailView.swift; sourceTree = "<group>"; };
 		34F292FF2CAD1E0D000EFB14 /* PlanManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlanManager.swift; sourceTree = "<group>"; };
 		34F293012CAD1E4A000EFB14 /* SavedPlansView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SavedPlansView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -140,10 +140,10 @@
 				34F292F12CAD1D3D000EFB14 /* ListModel.swift */,
 				34F292F32CAD1D59000EFB14 /* BasketSheetView.swift */,
 				34F292F52CAD1D74000EFB14 /* plans.swift */,
-				34F292F72CAD1D90000EFB14 /* CategoryCard.swift */,
+				34F292F72CAD1D90000EFB14 /* CategoryCardtest.swift */,
 				34F292F92CAD1DA8000EFB14 /* ListDetailView.swift */,
 				34F292FB2CAD1DD8000EFB14 /* BudgetEntrySheet.swift */,
-				34F292FD2CAD1DF3000EFB14 /* PlanDetailSheet.swift */,
+				34F292FD2CAD1DF3000EFB14 /* PlanDetailView.swift */,
 				34F292FF2CAD1E0D000EFB14 /* PlanManager.swift */,
 				34F293012CAD1E4A000EFB14 /* SavedPlansView.swift */,
 			);
@@ -314,8 +314,8 @@
 				34F292EA2CAD1CC4000EFB14 /* ItemSelectionView.swift in Sources */,
 				34F292F62CAD1D74000EFB14 /* plans.swift in Sources */,
 				34F292EC2CAD1CE3000EFB14 /* FruitItemsView.swift in Sources */,
-				34F292FE2CAD1DF3000EFB14 /* PlanDetailSheet.swift in Sources */,
-				34F292F82CAD1D90000EFB14 /* CategoryCard.swift in Sources */,
+				34F292FE2CAD1DF3000EFB14 /* PlanDetailView.swift in Sources */,
+				34F292F82CAD1D90000EFB14 /* CategoryCardtest.swift in Sources */,
 				34F292F42CAD1D59000EFB14 /* BasketSheetView.swift in Sources */,
 				34AB4E6E2CAA6C710050FE42 /* GroceryAppApp.swift in Sources */,
 				34F292E42CAD1C6A000EFB14 /* FruitItem.swift in Sources */,

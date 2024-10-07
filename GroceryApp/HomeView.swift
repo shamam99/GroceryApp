@@ -29,15 +29,15 @@ struct HomeView: View {
                     .ignoresSafeArea()
                     .frame(height:1000)
                 ZStack{
-                    Circle()
-                        .foregroundColor(.white)
-                        .frame(width: 1300,height: 700)
-                        .padding(.top,-200)
-                    Image("back")
+//                    Circle()
+//                        .foregroundColor(.white)
+//                        .frame(width: 1300,height: 700)
+//                        .padding(.top,-200)
+                    Image("logo")
                         .resizable()
-                        .frame(width: 400 ,height: 800)
+                        .frame(width: 300 ,height: 300)
                 }
-                .padding(.top,-400)
+                .padding(.top,-300)
                     
                 
                 VStack(spacing: 20) {
@@ -65,8 +65,8 @@ struct HomeView: View {
                             .background(Color.blue)
                             .foregroundColor(.white)
                             .cornerRadius(10)
-                        
                     }
+
                 }
                 .padding(.top,400)
             }

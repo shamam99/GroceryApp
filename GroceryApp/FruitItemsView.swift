@@ -17,15 +17,25 @@ struct FruitItemsView: View {
     @State private var navigateToMyList = false
     @State private var localNavigateToHome = false
     
+    var filteredFruits: [FruitItem] {
+        if searchText.isEmpty {
+            return fruits
+        } else {
+            return fruits.filter { $0.name.lowercased().contains(searchText.lowercased()) }
+        }
+    }
+    
     var body: some View {
-        ZStack{
-            Color(red: 0.9529411764705882, green: 0.9490196078431372, blue: 0.9725490196078431)
+        ZStack {
+            Color(red: 0.952, green: 0.949, blue: 0.972)
                 .ignoresSafeArea()
+            
             VStack {
                 Text("Fruits")
                     .font(.largeTitle)
                     .padding(.top, 20)
                     .bold()
+                
                 HStack {
                     TextField("Search...", text: $searchText)
                         .padding(7)
@@ -36,48 +46,44 @@ struct FruitItemsView: View {
                 .padding(.top, -4)
                 
                 ScrollView {
-                    ForEach(fruits.indices, id: \.self) { index in
+                    ForEach(filteredFruits.indices, id: \.self) { index in
                         HStack(spacing: 20) {
-                            Image(fruits[index].imageName)
+                            Image(filteredFruits[index].imageName)
                                 .resizable()
                                 .scaledToFit()
                                 .frame(width: 60, height: 60)
                                 .cornerRadius(8)
                             
                             VStack(alignment: .leading, spacing: 5) {
-                                Text(fruits[index].name)
+                                Text(filteredFruits[index].name)
                                     .font(.headline)
-                                Text("\(String(format: "%.2f", fruits[index].price)) SR")
+                                Text("\(String(format: "%.2f", filteredFruits[index].price)) SR")
                                     .font(.subheadline)
                                     .foregroundColor(.gray)
                             }
                             
                             Spacer()
                             
-                            // controls
                             HStack {
-                                // Decrease
                                 Button(action: {
-                                    let currentQuantity = basketManager.getQuantity(for: fruits[index])
+                                    let currentQuantity = basketManager.getQuantity(for: filteredFruits[index])
                                     if currentQuantity > 0 {
                                         let newQuantity = currentQuantity - 1
-                                        basketManager.updateBasket(fruit: fruits[index], quantity: newQuantity)
+                                        basketManager.updateBasket(fruit: filteredFruits[index], quantity: newQuantity)
                                     }
                                 }) {
                                     Image(systemName: "minus.circle")
                                         .font(.system(size: 20))
-                                        .foregroundColor(basketManager.getQuantity(for: fruits[index]) > 0 ? .blue : .gray)
+                                        .foregroundColor(basketManager.getQuantity(for: filteredFruits[index]) > 0 ? .blue : .gray)
                                 }
                                 
-                                // Display quantity
-                                Text("\(basketManager.getQuantity(for: fruits[index]))")
+                                Text("\(basketManager.getQuantity(for: filteredFruits[index]))")
                                     .font(.headline)
                                     .frame(width: 30)
                                 
-                                // Increase
                                 Button(action: {
-                                    let newQuantity = basketManager.getQuantity(for: fruits[index]) + 1
-                                    basketManager.updateBasket(fruit: fruits[index], quantity: newQuantity)
+                                    let newQuantity = basketManager.getQuantity(for: filteredFruits[index]) + 1
+                                    basketManager.updateBasket(fruit: filteredFruits[index], quantity: newQuantity)
                                 }) {
                                     Image(systemName: "plus.circle")
                                         .font(.system(size: 20))
@@ -88,7 +94,6 @@ struct FruitItemsView: View {
                         .padding()
                         .background(Color(.white))
                         .cornerRadius(10)
-//                        .shadow(radius: 5)
                         .padding(.horizontal)
                         .padding(.top, 10)
                     }
@@ -96,7 +101,6 @@ struct FruitItemsView: View {
                 
                 Spacer()
                 
-                // show basket sheet
                 Button(action: {
                     showBasketSheet = true
                 }) {
@@ -108,7 +112,6 @@ struct FruitItemsView: View {
                         .padding(.bottom, 20)
                 }
                 .sheet(isPresented: $showBasketSheet) {
-                    // pass the  list name
                     BasketSheetView(navigateToHome: $navigateToHome, listName: listName)
                 }
                 
