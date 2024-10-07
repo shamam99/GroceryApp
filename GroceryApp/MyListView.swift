@@ -12,34 +12,39 @@ struct MyListView: View {
     @Binding var navigateToHome: Bool
     
     var body: some View {
-        VStack {
-            Text("Your Lists")
-                .font(.largeTitle)
-                .padding(.top, 20)
-            
-            ScrollView {
-                ForEach(basketManager.createdLists, id: \.name) { createdList in
-                    NavigationLink(destination: ListDetailView(listName: createdList.name)) {
-                        HStack {
-                            VStack(alignment: .leading) {
-                                Text(createdList.name)
-                                    .font(.headline)
-                                Text("\(formattedDate(Date()))")
-                                    .font(.subheadline)
+        ZStack{
+            Color(red: 0.9529411764705882, green: 0.9490196078431372, blue: 0.9725490196078431)
+            .edgesIgnoringSafeArea(.all)
+
+            VStack {
+                Text("Your Lists")
+                    .font(.largeTitle)
+                    .padding(.top, 20)
+                
+                ScrollView {
+                    ForEach(basketManager.createdLists, id: \.name) { createdList in
+                        NavigationLink(destination: ListDetailView(listName: createdList.name)) {
+                            HStack {
+                                VStack(alignment: .leading) {
+                                    Text(createdList.name)
+                                        .font(.headline)
+                                    Text("\(formattedDate(Date()))")
+                                        .font(.subheadline)
+                                }
+                                Spacer()
                             }
-                            Spacer()
+                            .padding()
+                            .background(Color(.white))
+                            .cornerRadius(10)
+//                            .shadow(radius: 5)
+                            .padding(.horizontal)
+                            .padding(.top, 10)
                         }
-                        .padding()
-                        .background(Color(.systemGray6))
-                        .cornerRadius(10)
-                        .shadow(radius: 5)
-                        .padding(.horizontal)
-                        .padding(.top, 10)
                     }
                 }
+                
+                Spacer()
             }
-            
-            Spacer()
         }
         .navigationBarTitle("Your Lists", displayMode: .inline)
     }

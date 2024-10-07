@@ -15,51 +15,57 @@ struct BasketSheetView: View {
     var listName: String
 
     var body: some View {
-        NavigationView {
-            VStack {
-                Text("My Basket")
-                    .font(.largeTitle)
-                    .padding(.top, 20)
-                
-                ScrollView {
-                    ForEach(basketManager.basketItems, id: \.self) { fruit in
-                        HStack {
-                            VStack(alignment: .leading) {
-                                Text(fruit.name)
-                                    .font(.headline)
+      
+            
+            NavigationView {
+                ZStack{
+                    Color(red: 0.9529411764705882, green: 0.9490196078431372, blue: 0.9725490196078431)
+                        .ignoresSafeArea()
+                VStack {
+                    Text("My Basket")
+                        .font(.largeTitle)
+                        .padding(.top, 20)
+                    
+                    ScrollView {
+                        ForEach(basketManager.basketItems, id: \.self) { fruit in
+                            HStack {
+                                VStack(alignment: .leading) {
+                                    Text(fruit.name)
+                                        .font(.headline)
+                                }
+                                Spacer()
                             }
-                            Spacer()
+                            .padding()
+                            .background(Color(.white))
+                            .cornerRadius(10)
+//                            .shadow(radius: 5)
+                            .padding(.horizontal)
+                            .padding(.top, 10)
                         }
-                        .padding()
-                        .background(Color(.systemGray6))
-                        .cornerRadius(10)
-                        .shadow(radius: 5)
-                        .padding(.horizontal)
-                        .padding(.top, 10)
                     }
-                }
-                
-                Spacer()
-                
-                Button(action: {
-                    if !listName.isEmpty && !basketManager.basketItems.isEmpty {
-                        basketManager.createList(name: listName)
-                        navigateToHome = true
+                    
+                    Spacer()
+                    
+                    Button(action: {
+                        if !listName.isEmpty && !basketManager.basketItems.isEmpty {
+                            basketManager.createList(name: listName)
+                            navigateToHome = true
+                        }
+                    }) {
+                        Text("Create")
+                            .frame(width: 150, height: 50)
+                            .background(Color.blue)
+                            .foregroundColor(.white)
+                            .cornerRadius(25)
+                            .padding(.bottom, 20)
                     }
-                }) {
-                    Text("Create")
-                        .frame(width: 150, height: 50)
-                        .background(Color.blue)
-                        .foregroundColor(.white)
-                        .cornerRadius(25)
-                        .padding(.bottom, 20)
-                }
-                
-                NavigationLink(
-                    destination: MyListView(navigateToHome: $navigateToHome),
-                    isActive: $navigateToMyList
-                ) {
-                    EmptyView()
+                    
+                    NavigationLink(
+                        destination: MyListView(navigateToHome: $navigateToHome),
+                        isActive: $navigateToMyList
+                    ) {
+                        EmptyView()
+                    }
                 }
             }
             .navigationBarTitle("My Basket", displayMode: .inline)
