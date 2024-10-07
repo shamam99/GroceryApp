@@ -11,58 +11,63 @@ struct PlanDetailSheet: View {
     let plan: Plan
 
     var body: some View {
-        VStack {
-            Text("Details for \(plan.title)")
-                .font(.headline)
-                .padding()
-            
-            ScrollView {
-                VStack(alignment: .leading) {
-                    ForEach(plan.items, id: \.id) { item in
-                        HStack {
-                            VStack(alignment: .leading) {
-                                Text("\(item.quantity)x \(item.name)")
-                                    .font(.headline)
-                                Text("Price: \(String(format: "%.2f", item.price)) SR")
-                                    .font(.subheadline)
+        ZStack{
+            Color(red: 0.9529411764705882, green: 0.9490196078431372, blue: 0.9725490196078431)
+            //                .ignoresSafeArea()
+                .edgesIgnoringSafeArea(.all)
+            VStack {
+                Text("Details for \(plan.title)")
+                    .font(.headline)
+                    .padding()
+                
+                ScrollView {
+                    VStack(alignment: .leading) {
+                        ForEach(plan.items, id: \.id) { item in
+                            HStack {
+                                VStack(alignment: .leading) {
+                                    Text("\(item.quantity)x \(item.name)")
+                                        .font(.headline)
+                                    Text("Price: \(String(format: "%.2f", item.price)) SR")
+                                        .font(.subheadline)
+                                }
+                                Spacer()
                             }
-                            Spacer()
+                            .padding()
+                            .background(Color(.white))
+                            .cornerRadius(10)
+//                            .shadow(radius: 5)
+                            .padding(.horizontal)
+                            .padding(.top, 10)
                         }
-                        .padding()
-                        .background(Color(.systemGray6))
-                        .cornerRadius(10)
-                        .shadow(radius: 5)
-                        .padding(.horizontal)
-                        .padding(.top, 10)
                     }
                 }
-            }
-            
-            VStack(spacing: 10) {
-                Text("Total: \(String(format: "%.2f", plan.total)) SR")
-                    .font(.headline)
-                    .padding(.top, 20)
                 
-                Text("Budget: \(String(format: "%.2f", plan.total + plan.saved)) SR")
-                    .font(.headline)
-                    .foregroundColor(.gray)
+                VStack(spacing: 10) {
+                    Text("Total: \(String(format: "%.2f", plan.total)) SR")
+                        .font(.headline)
+                        .padding(.top, 20)
+                    
+                    Text("Budget: \(String(format: "%.2f", plan.total + plan.saved)) SR")
+                        .font(.headline)
+                        .foregroundColor(.gray)
+                }
+                .padding(.top, 10)
+                
+                Spacer()
+                
+                Button(action: {
+                    // Optional: Dismiss the sheet if needed
+                }) {
+                    Text("Done")
+                        .frame(width: 150, height: 50)
+                        .background(Color.blue)
+                        .foregroundColor(.white)
+                        .cornerRadius(25)
+                        .padding(.bottom, 20)
+                }
             }
-            .padding(.top, 10)
-            
-            Spacer()
-            
-            Button(action: {
-                // Optional: Dismiss the sheet if needed
-            }) {
-                Text("Done")
-                    .frame(width: 150, height: 50)
-                    .background(Color.blue)
-                    .foregroundColor(.white)
-                    .cornerRadius(25)
-                    .padding(.bottom, 20)
-            }
+            .padding()
         }
-        .padding()
     }
 }
 

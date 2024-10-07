@@ -16,70 +16,74 @@ struct ListDetailView: View {
     @State private var navigateToPlans = false
 
     var body: some View {
-        VStack {
-            Text("Details for \(listName)")
-                .font(.largeTitle)
-                .padding(.top, 20)
-            
-            
-            if let list = basketManager.createdLists.first(where: { $0.name == listName }) {
-                ScrollView {
-                    ForEach(list.items, id: \.id) { item in
-                        HStack {
-                            VStack(alignment: .leading) {
-                                Text(item.name)
-                                    .font(.headline)
-                                Text("\(String(format: "%.2f", item.price)) SR")
-                                    .font(.subheadline)
-                                    .foregroundColor(.gray)
-                                Text("Quantity: \(item.quantity)")
-                                    .font(.subheadline)
-                                    .foregroundColor(.gray)
+        ZStack{
+            Color(red: 0.9529411764705882, green: 0.9490196078431372, blue: 0.9725490196078431)
+                .ignoresSafeArea()
+            VStack {
+                Text("Details for \(listName)")
+                    .font(.largeTitle)
+                    .padding(.top, 20)
+                
+                
+                if let list = basketManager.createdLists.first(where: { $0.name == listName }) {
+                    ScrollView {
+                        ForEach(list.items, id: \.id) { item in
+                            HStack {
+                                VStack(alignment: .leading) {
+                                    Text(item.name)
+                                        .font(.headline)
+                                    Text("\(String(format: "%.2f", item.price)) SR")
+                                        .font(.subheadline)
+                                        .foregroundColor(.gray)
+                                    Text("Quantity: \(item.quantity)")
+                                        .font(.subheadline)
+                                        .foregroundColor(.gray)
+                                }
+                                Spacer()
                             }
-                            Spacer()
+                            .padding()
+                            .background(Color(.white))
+                            .cornerRadius(10)
+//                            .shadow(radius: 5)
+                            .padding(.horizontal)
+                            .padding(.top, 10)
                         }
-                        .padding()
-                        .background(Color(.systemGray6))
-                        .cornerRadius(10)
-                        .shadow(radius: 5)
-                        .padding(.horizontal)
-                        .padding(.top, 10)
                     }
+                    
+                    // Nav to Plans view
+                    NavigationLink(
+                        destination: Plans(
+                            minBudget: Double(enteredMinBudget) ?? 0.0,
+                            maxBudget: Double(enteredMaxBudget) ?? 0.0,
+                            items: mapFruitItemsToPlanItems(list.items)
+                        ),
+                        isActive: $navigateToPlans
+                    ) {
+                        EmptyView()
+                    }
+                } else {
+                    Text("No items in this list")
+                        .foregroundColor(.gray)
                 }
                 
-                // Nav to Plans view
-                NavigationLink(
-                    destination: Plans(
-                        minBudget: Double(enteredMinBudget) ?? 0.0,
-                        maxBudget: Double(enteredMaxBudget) ?? 0.0,
-                        items: mapFruitItemsToPlanItems(list.items)
-                    ),
-                    isActive: $navigateToPlans
-                ) {
-                    EmptyView()
+                Spacer()
+                
+                Button(action: {
+                    showBudgetSheet = true
+                }) {
+                    Text("Set Budget")
+                        .frame(width: 150, height: 50)
+                        .background(Color.blue)
+                        .foregroundColor(.white)
+                        .cornerRadius(25)
+                        .padding(.bottom, 20)
                 }
-            } else {
-                Text("No items in this list")
-                    .foregroundColor(.gray)
-            }
-            
-            Spacer()
-            
-            Button(action: {
-                showBudgetSheet = true
-            }) {
-                Text("Set Budget")
-                    .frame(width: 150, height: 50)
-                    .background(Color.blue)
-                    .foregroundColor(.white)
-                    .cornerRadius(25)
-                    .padding(.bottom, 20)
-            }
-            .sheet(isPresented: $showBudgetSheet) {
-                BudgetEntrySheet(minBudget: $enteredMinBudget, maxBudget: $enteredMaxBudget, onDone: {
-                    showBudgetSheet = false
-                    navigateToPlans = true // nav to plans
-                })
+                .sheet(isPresented: $showBudgetSheet) {
+                    BudgetEntrySheet(minBudget: $enteredMinBudget, maxBudget: $enteredMaxBudget, onDone: {
+                        showBudgetSheet = false
+                        navigateToPlans = true // nav to plans
+                    })
+                }
             }
         }
         .navigationBarTitle("List Details", displayMode: .inline)
