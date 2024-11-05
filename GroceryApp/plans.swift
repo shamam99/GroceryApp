@@ -98,10 +98,10 @@ struct Plans: View {
             title: "\(Int(maxBudget * 0.5))-\(Int(maxBudget * 0.75)) SR",
             items: plan2Items,
             total: plan2Total,
-            saved: maxBudget - plan2Total // Save from the user's max budget
+            saved: maxBudget - plan2Total
         )
         
-        // Plan 3: Budget up to the full max budget
+        
         var plan3Items = [PlanItem]()
         var plan3Total: Double = 0.0
         
